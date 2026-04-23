@@ -11,19 +11,29 @@ from .presets import PRESETS
 
 
 @csrf_exempt
+from django.http import JsonResponse
+from django.core.files.storage import default_storage
+
 def upload_image(request):
-    if request.method != 'POST':
-        return JsonResponse({'error': 'Only POST allowed'}, status=405)
+    try:
+        if request.method != 'POST':
+            return JsonResponse({'error': 'Only POST allowed'}, status=405)
 
-    image_file = request.FILES.get('image')
-    if not image_file:
-        return JsonResponse({'error': 'No image provided'}, status=400)
+        file = request.FILES.get('image')
 
-    uploaded = UploadedImage.objects.create(original=image_file)
-    return JsonResponse({
-        'id': uploaded.id,
-        'original_url': request.build_absolute_uri(uploaded.original.url),
-    })
+        if not file:
+            return JsonResponse({'error': 'No file provided'}, status=400)
+
+        # Save file safely
+        file_path = default_storage.save(f'uploads/{file.name}', file)
+
+        return JsonResponse({
+            'message': 'Upload successful',
+            'file_path': file_path
+        })
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 @csrf_exempt
