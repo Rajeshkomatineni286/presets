@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-const API_BASE = 'https://presets-e6ky.onrender.com/'
+const API_BASE = 'https://presets-e6ky.onrender.com'
 
 export default function App() {
   const [file, setFile] = useState(null)
