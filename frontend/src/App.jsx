@@ -30,7 +30,7 @@ export default function App() {
       const body = new FormData()
       body.append('image', file)
 
-      const res = await fetch(`${API_BASE}/upload/`, {
+      const res = await fetch(`${API_BASE}/api/upload/`, {
         method: 'POST',
         body,
       })
@@ -53,7 +53,7 @@ export default function App() {
       body.append('image_id', uploaded.id)
       body.append('preset', preset)
 
-      const res = await fetch(`${API_BASE}/apply-preset/`, {
+      const res = await fetch(`${API_BASE}/api/apply-preset/`, {
         method: 'POST',
         body,
       })
